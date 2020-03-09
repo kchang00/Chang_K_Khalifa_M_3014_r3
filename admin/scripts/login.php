@@ -43,13 +43,21 @@ function login($username, $password, $firstlogin){
                     ':id'=>$id
                 )
             );
+
+            // fetch user_first_login from database
+            $user_first_login = $founduser['user_first_login'];
        }
 
        if(isset($id)){
-           // if user_first_login == NULL
-           // redirect_to('admin_edituser.php');
-           // else
-           redirect_to('index.php');
+           // if user_first_login == not NULL
+           // redirect_to('index.php');
+           // else redirect_to('admin_edituser.php');
+           if(isset($user_first_login)){
+                redirect_to('index.php');
+           }else{
+                redirect_to('admin_edituser.php');
+           }
+           
         }else{
             return 'Incorrect password';
         }
