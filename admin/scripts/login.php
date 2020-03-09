@@ -1,6 +1,6 @@
 <?php
 
-function login($username, $password, $firstlogin){
+function login($username, $password, $login_time_pretty){
     // sprint = like print, but returns a string
     // return sprintf('You are trying username=>%s, password=>%s', $username, $password);
 
@@ -31,15 +31,17 @@ function login($username, $password, $firstlogin){
         // if($user_match->fetchColumn()>0){ => if fetched result is larger than 0 (use if using COUNT(*))
        while($founduser = $user_match->fetch(PDO::FETCH_ASSOC)){
            $id = $founduser['user_id'];
+           $user_created = $founduser['user_date'];
 
            $_SESSION['user_id'] = $id;
            $_SESSION['user_name'] = $founduser['user_fname'];
+           $_SESSION['user_date'] = $founduser['user_date'];
 
-            $check_match_query = 'UPDATE `tbl_user` SET user_first_login = :firstlogin WHERE user_id = :id';
+            $check_match_query = 'UPDATE `tbl_user` SET user_first_login = :logintime WHERE user_id = :id';
             $user_match = $pdo->prepare($check_match_query);
             $user_match->execute(
                 array(
-                    ':firstlogin'=>$firstlogin,
+                    ':logintime'=>$login_time_pretty,
                     ':id'=>$id
                 )
             );

@@ -1,5 +1,6 @@
 <?php 
     ini_set('display_errors', 1);
+    date_default_timezone_set('America/Toronto');
 
     define('ABSPATH', __DIR__);
     define('ADMIN_PATH', ABSPATH.'/admin');

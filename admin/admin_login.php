@@ -1,20 +1,37 @@
 <?php 
     require_once '../load.php';
-    date_default_timezone_set('America/Toronto');
-    $firsttime = new DateTime();
-    $firstlogin = $firsttime->format('Y/m/d H:i:s');
-    $checktime = new DateTime('+ 5 minutes');
-    $checklogin = $checktime->format('Y/m/d H:i:s');
-    $calculatelimit = $firsttime->diff($checktime);
 
-    print_r($firstlogin . "\n");                        
-    print_r($checklogin . "\n");
-    // interval property takes i for minutes
-    echo $calculatelimit->format('%i minutes ago');
+    // grab the session data instead
+    $user_date = '2020-03-9 19:40:00';
+    // $user_date = $_SESSION['user_date'];
+    // formatting necessary to pass into db
+    // order of formatting important ->modify changes the variables
+    $user_created_time = new DateTime($user_date);
+    $user_created_time_pretty = $user_created_time->format('Y/m/d H:i:s');
 
-    // if $calculatelimit > 5 then let them in
-    // if $calculatelimit < 0 then return 'you have $calculatelimit minutes left'
-    // else, lock them out
+    $time_limit = $user_created_time->modify('+5 minutes');
+    $time_limit_pretty = $time_limit->format('Y/m/d H:i:s');
+
+    $login_time = new DateTime();
+    $login_time_pretty = $login_time->format('Y/m/d H:i:s');
+
+    // for debugging
+    print_r('User created: '. $user_created_time_pretty . "\n");
+    echo nl2br("\n");
+    print_r('User must log in by: '. $time_limit_pretty . "\n");
+    echo nl2br("\n");
+    print_r('User login: '. $login_time_pretty . "\n");
+    echo nl2br("\n");
+
+    // $calculate_limit = $user_created_time->diff($login_time);
+    // echo $calculate_limit->format('%y years, %m months, %d days, %h hours, %i minutes ago');
+
+    // if the user still has time
+    if($time_limit > $login_time) {
+        echo 'user can log in';
+    }else{
+        echo 'Account expired. Please contact the administrator.';
+    }
 
     if(isset($_POST['submit'])) {
         $username = trim($_POST['username']);
@@ -22,7 +39,7 @@
 
         if(!empty($username) && !empty($password)){
             //Login (login = function)
-            $message = login($username, $password, $firstlogin);
+            $message = login($username, $password, $login_time_pretty);
         }else{
             $message = 'Please fill out the required fields';
         }
