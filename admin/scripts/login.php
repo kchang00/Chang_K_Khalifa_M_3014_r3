@@ -60,19 +60,8 @@ function login($username, $password){
             $user_created_time = new DateTime($user_created);
             $user_created_time_pretty = $user_created_time->format('Y/m/d H:i:s');
 
-            $time_limit = $user_created_time->modify('+1 minutes');
+            $time_limit = $user_created_time->modify('+5 minutes');
             $time_limit_pretty = $time_limit->format('Y/m/d H:i:s');
-
-            // for debugging
-            // print_r('User created: '. $user_created_time_pretty . "\n");
-            // echo nl2br("\n");
-            // print_r('User must log in by: '. $time_limit_pretty . "\n");
-            // echo nl2br("\n");
-            // print_r('User login: '. $login_time_pretty . "\n");
-            // echo nl2br("\n");
-            // exit;
-            // $calculate_limit = $user_created_time->diff($login_time);
-            // echo $calculate_limit->format('%y years, %m months, %d days, %h hours, %i minutes ago');
 
             // if account is unlocked
             if($user_lock != 1) {
@@ -80,8 +69,7 @@ function login($username, $password){
                 if($time_limit > $login_time){
                     // if the user has logged in before
                     // meaning, there is a value for user_login and is not NULL
-                    // redirect_to('index.php');
-                    // else (the user has NOT logged in before) redirect_to('admin_edituser.php');
+                    // else user logging in for first time
                     if(isset($user_login)){
                         redirect_to('index.php'); 
                     }else{
@@ -92,7 +80,7 @@ function login($username, $password){
                     // if the user has logged in before
                     if(isset($user_login)){
                         redirect_to('index.php'); 
-                    // if it's the user's first time logging in
+                    // if user logging in for first time
                     // and the time has expired
                     }else{
                         // lock the account
@@ -107,6 +95,7 @@ function login($username, $password){
                         return 'Account has expired. Please contact the administrator.';
                     }
                 }
+            // if account is locked
             }else{
                 return 'Account has been locked. Please contact the administrator.';
             }
