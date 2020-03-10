@@ -1,7 +1,7 @@
 <?php
     require_once '../load.php';
     confirm_logged_in();
-
+    
     $id = $_SESSION['user_id'];
     $current_user = getSingleUser($id);
     if(!$current_user){
@@ -50,5 +50,6 @@
         <?php endwhile; ?>
     <?php endif;?>
     </form>
+    <a href="index.php">Go Home</a>
 </body>
 </html>
