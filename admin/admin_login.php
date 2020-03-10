@@ -1,37 +1,6 @@
 <?php 
     require_once '../load.php';
-
-    // grab the session data instead
-    $user_date = '2020-03-9 19:40:00';
-    // $user_date = $_SESSION['user_date'];
-    // formatting necessary to pass into db
-    // order of formatting important ->modify changes the variables
-    $user_created_time = new DateTime($user_date);
-    $user_created_time_pretty = $user_created_time->format('Y/m/d H:i:s');
-
-    $time_limit = $user_created_time->modify('+5 minutes');
-    $time_limit_pretty = $time_limit->format('Y/m/d H:i:s');
-
-    $login_time = new DateTime();
-    $login_time_pretty = $login_time->format('Y/m/d H:i:s');
-
-    // for debugging
-    print_r('User created: '. $user_created_time_pretty . "\n");
-    echo nl2br("\n");
-    print_r('User must log in by: '. $time_limit_pretty . "\n");
-    echo nl2br("\n");
-    print_r('User login: '. $login_time_pretty . "\n");
-    echo nl2br("\n");
-
-    // $calculate_limit = $user_created_time->diff($login_time);
-    // echo $calculate_limit->format('%y years, %m months, %d days, %h hours, %i minutes ago');
-
-    // if the user still has time
-    if($time_limit > $login_time) {
-        echo 'user can log in';
-    }else{
-        echo 'Account expired. Please contact the administrator.';
-    }
+    check_time_limit();
 
     if(isset($_POST['submit'])) {
         $username = trim($_POST['username']);
