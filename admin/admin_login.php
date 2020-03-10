@@ -1,6 +1,5 @@
 <?php 
     require_once '../load.php';
-    check_time_limit();
 
     if(isset($_POST['submit'])) {
         $username = trim($_POST['username']);
@@ -8,7 +7,7 @@
 
         if(!empty($username) && !empty($password)){
             //Login (login = function)
-            $message = login($username, $password, $login_time_pretty);
+            $message = login($username, $password);
         }else{
             $message = 'Please fill out the required fields';
         }
